@@ -1,0 +1,404 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>@ViewData["Title"] - Administration</title>
+    @*<link rel="icon" type="image/png" href="/assets/img/logo.png" />*@
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+    <link href="~/assets/img/favicon.png" rel="icon">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+    <style>
+        .col-form-label {
+            width: 200px;
+            font-weight: 700;
+        }
+    </style>
+
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    
+</head>
+<body class="sb-nav-fixed">
+    @await Component.InvokeAsync("Navigation")
+
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+           
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class=" ri-account-circle-line
+"></i><span>Người Dùng</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="~/User/Index" >
+                            <i class="bi bi-circle"></i><span>Danh Sách</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="User" asp-action="Create">
+                            <i class="bi bi-circle"></i><span>Thêm Mới</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li><!-- End Components Nav -->
+
+           
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+                    <i class="fa-solid fa-martini-glass"></i>
+                    <span>Sản Phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-controller ="Product" asp-action="Index">
+                            <i class="bi bi-circle"></i><span>Danh Sách Sản Phẩm </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller ="Category" asp-action="Index">
+                            <i class="bi bi-circle"></i><span>Danh mục sản phẩm</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </li><!-- End Forms Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>tác giả</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-controller="Author" asp-action="Index">
+                            <i class="bi bi-circle"></i><span>Danh sách tác giả</span>
+                        </a>
+                    </li>
+                    @*<li>
+                        <a href="tables-data.html">
+                            <i class="bi bi-circle"></i><span>Data Tables</span>
+                        </a>
+                    </li>*@
+                </ul>
+            </li><!-- End Tables Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#order-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-cart4"></i><span>Đơn hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="order-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-controller="Order" asp-action="Index">
+                            <i class="bi bi-circle"></i><span>Danh sách Đơn hàng</span>
+                        </a>
+                    </li>
+                    @*<li>
+                        <a href="tables-data.html">
+                            <i class="bi bi-circle"></i><span>Data Tables</span>
+                        </a>
+                    </li>*@
+                </ul>
+            </li><!-- End Tables Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-bar-chart"></i><span>Thống kê</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="https://sandbox.vnpayment.vn/merchantv2/Home/Dashboard.htm" target="_blank" id="myLink">
+                            <i class="bi bi-circle"></i><span>Hóa đơn ví điện tử</span>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="">
+                            <i class="bi bi-circle"></i><span>Hóa đơn mua hàng</span>
+                        </a>
+                    </li>
+                   @* <li>
+                        <a href="charts-apexcharts.html">
+                            <i class="bi bi-circle"></i><span>ApexCharts</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="charts-echarts.html">
+                            <i class="bi bi-circle"></i><span>ECharts</span>
+                        </a>
+                    </li>*@
+                </ul>
+            </li><!-- End Charts Nav -->
+
+           
+            <li class="nav-heading">Pages</li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="~/Home/Content">
+                    <i class="bi bi-gem"></i>
+                    <span>Content</span>
+                </a>
+                @* <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                <a href="icons-bootstrap.html">
+                <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
+                </a>
+                </li>
+                <li>
+                <a href="icons-remix.html">
+                <i class="bi bi-circle"></i><span>Remix Icons</span>
+                </a>
+                </li>
+                <li>
+                <a href="icons-boxicons.html">
+                <i class="bi bi-circle"></i><span>Boxicons</span>
+                </a>
+                </li>
+                </ul>*@
+            </li><!-- End Icons Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="~/Home/Profile">
+                    <i class="bi bi-person"></i>
+                    <span>Profile</span>
+                </a>
+            </li><!-- End Profile Page Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="~/Home/FAQ">
+                    <i class="bi bi-question-circle"></i>
+                    <span>F.A.Q</span>
+                </a>
+            </li><!-- End F.A.Q Page Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="~/Home/Contact">
+                    <i class="bi bi-envelope"></i>
+                    <span>Contact</span>
+                </a>
+            </li><!-- End Contact Page Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="~/User/Create">
+                    <i class="bi bi-card-list"></i>
+                    <span>Register</span>
+                </a>
+            </li><!-- End Register Page Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="~/Index/Login">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Login</span>
+                </a>
+            </li><!-- End Login Page Nav -->
+
+          @*  <li class="nav-item">
+                <a class="nav-link collapsed" href="/"
+                    <i class="bi bi-dash-circle"></i>
+                    <span>Error 404</span>
+                </a>
+            </li>*@<!-- End Error 404 Page Nav -->
+
+           @* <li class="nav-item">
+                <a class="nav-link collapsed" href="pages-blank.html">
+                    <i class="bi bi-file-earmark"></i>
+                    <span>Blank</span>
+                </a>
+            </li><!-- End Blank Page Nav -->*@
+
+        </ul>
+
+    </aside><!-- End Sidebar-->
+
+    <main id="main" class="main">
+        @RenderBody()
+    </main>
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+    </footer><!-- End Footer -->
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <script>
+        // Get all the list items with the class "nav-item"
+        $(document).ready(function () {
+            // Get the current URL
+            var currentUrl = window.location.href;
+
+            // Iterate through each list item with the class "nav-item"
+            $('.nav-item').each(function () {
+                // Get the anchor tag within the list item
+                var anchor = $(this).find('a');
+                var nav = $(this);
+
+                anchor.each(function () {
+                    var href = "https://localhost:5002" + $(this).attr('href');
+
+                    if (href === currentUrl) { 
+                        console.log(href === currentUrl)
+                        $(this).addClass('active')
+                        $(this).css({
+                            'color': '#4154f1',
+                            'background': '#f6f9ff'
+                        });
+                        // Toggle the "collapsed" class
+                        nav.toggleClass('collapsed');
+                        // Toggle the "show" class on the parent ul element
+                        nav.find('.nav-content').toggleClass('show');
+                    }
+                });
+                // Check if the href matches the current URL
+               
+            });
+        });
+
+
+        // Create a connection to the SignalR hub
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:5001/orderHub", {
+            skipNegotiation: true,
+            transport: signalR.HttpTransportType.WebSockets
+        }).build();
+        var count = localStorage.getItem('count') || 0; // Retrieve count from localStorage, or set it to 0 if not found
+        var count_cmt = localStorage.getItem('count_cmt') || 0;
+        connection.on("OrderCheckOut", (message) => {
+            
+            count = parseInt(count) + 1; // Increment count
+            $(".badge.bg-primary").text(count);
+            $(".dropdown-header").text(`You have
+                        ${count} new notifications`);
+            localStorage.setItem('count', count); // Save updated count to localStorage
+
+            let { userName, orderDate, ...rest } = message;
+            $('#notifications li.notification-item:first').remove();
+
+            let html = `
+                        <li class="notification-item">
+                                    <i class="bi bi-cart-check-fill text-success"></i>
+                                    <div>
+                                                <h4>${userName}</h4>
+                                        <p>Have checkout their cart</p>
+                                                <p>At ${orderDate}</p>
+                                    </div>
+                                        </li> <li>
+                                <hr class="dropdown-divider">
+                            </li>`
+            let fourthItem = $('#notifications li.notification-item:eq(0)');
+
+            fourthItem.before(html);
+
+            statisticByDateTime();
+            pieChart();
+            reportChart();
+            userOrder();
+            productOrder();
+
+        });
+        connection.on("CommentMessage", (message) => {
+            count_cmt = parseInt(count_cmt) + 1; // Increment count
+
+            $(".bg-success.badge-number").text(count_cmt);
+            $(".dropdown-header.dh_1").text(`You have
+                        ${count_cmt} new notifications`);
+            localStorage.setItem('count_cmt', count_cmt); // Save updated count to localStorage
+
+            let { commentText, userId, createdDate, productId, ...rest } = message;
+
+            $('#notifications1 li.notification-item:first').remove();
+
+            let html = ` <li class="message-item">
+                                    <a href="http://localhost:4200/detail-product;id=${productId}" target="_blank">
+                                    <img src="assets/img/logo.jpg" alt="" class="rounded-circle">
+                                    <div>
+                                        <h4>${userId}</h4>
+                                        <p>${commentText}</p>
+                                        <p>${createdDate}</p>
+                                    </div>
+                                </a>
+                                    </li> <li>
+                                <hr class="dropdown-divider">
+                            </li>`;
+
+            let fourthItem = $('#notifications1 li.message-item:eq(0)');
+            console.log(fourthItem)
+
+            fourthItem.before(html);
+        });
+        // Start the connection
+        connection
+            .start()
+            .then(() => {
+                console.log('SignalR connection started.');
+            })
+            .catch((error) => {
+                console.error(
+                    'Error starting SignalR connection: ' + error
+                );
+            });
+        // Remove count notifications
+        $(".nav-link.hk1").click(function (e) {
+            $(".badge.bg-primary").text("0");
+            localStorage.removeItem('count');
+
+        })
+        $(".nav-link.hk2").click(function (e) {
+            $(".bg-success.badge-number").text("0");
+            localStorage.removeItem('count_cmt');
+            console.log(123)
+
+
+        })
+                    // Other SignalR code goes here
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="~/js/scripts.js"></script>
+    <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="~/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="~/assets/vendor/quill/quill.min.js"></script>
+    <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/assets/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

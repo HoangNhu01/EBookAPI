@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Exchange.WebServices" Version="2.2.0" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.6.0" />
+		<PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\EBook.Data\EBook.Data.csproj" />
+	  <ProjectReference Include="..\EBook.Utilities\EBook.Utilities.csproj" />
+	  <ProjectReference Include="..\EBook.ViewModels\EBook.ViewModels.csproj" />
+	</ItemGroup>
+</Project>

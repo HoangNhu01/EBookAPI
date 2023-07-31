@@ -1,0 +1,216 @@
+﻿@using System.Globalization
+@using eBook.Utilities.Constants
+@using eBook.ViewModels.Catalog.Products
+@using eBook.ViewModels.Common;
+@using Microsoft.AspNetCore.Http
+
+@model ApiResult<PagedResult<ProductVm>>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts{
+    <script>
+        setInterval(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);
+
+        $(document).ready(function () {
+            //const checkbox = document.getElementById('flexSwitchCheckDefault');
+            const message = document.getElementById('mess-box');
+
+           
+            $(".form-check-input").change(function (event) {
+                // Get the checked value
+                const isChecked = $(this).prop('checked');
+                console.log(isChecked)
+                // Make an AJAX request to the controller
+                const productId = $(this).attr('itemid');
+
+                const url = `https://localhost:5001/api/products/${productId}/${isChecked}`;
+                fetch(url, {
+                    method: 'PUT'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            message.innerHTML = ` <div id="msgAlert" class="alert alert-success" role="alert">
+                                        Cập nhật thành công
+                            </div>`
+                        } else {
+                            
+                        }
+                    })
+                    .catch(error => {
+                        // Handle fetch error
+                        // For example, display an error message or handle the error condition
+                    });
+            });
+        });
+    </script>
+    
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/productHub").build(); // Replace with the appropriate hub URL
+
+        connection.on("SendMessage", function (product, i) {
+            // Update the product list in the Index view with the new product information
+            // You can use JavaScript/jQuery to update the DOM dynamically
+            console.log(product,i);
+        });
+        connection.start().then(function () {
+            console.log("Connected to the product hub.");
+        }).catch(function (err) {
+            console.error(err.toString(),111);
+        });
+    </script>
+
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Sản phẩm</li>
+        <li class="breadcrumb-item active">Danh sách sản phẩm</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                        <a class="btn btn-outline-success" asp-action="Create" asp-controller="Product">Tạo mới</a>
+                </div>
+                @*<div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-9">
+                                    <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" style="
+    border-radius: 25px;
+" />
+                                    <select class="form-select" name="categoryId">
+                                        <option value="@ViewBag.CurrentCateId" selected disabled hidden>
+                                        @(ViewBag.CurrentCateId ?? "Danh mục")
+                                    </option>
+                                    @foreach (var option in ViewBag.Categories)
+                                    {
+                                        <option value="@option.Value">@option.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/Product/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>*@
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row" id="mess-box">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div class="table-responsive">
+                <table class="table datatable table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                Id
+                            </th>
+                            <th scope="col">
+                                Image
+                            </th>
+                            
+                            <th scope="col">
+                                Name
+                            </th>
+                            <th scope="col">
+                                Original Price
+                            </th>
+                            <th scope="col">
+                                Sale Price
+                            </th>
+                            <th scope="col">
+                                Stock
+                            </th>
+                            <th scope="col">
+                                Special
+                            </th>
+                            <th scope="col">
+                                Author
+                            </th>
+                            <th scope="col">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ResultObj.Items)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    <img style="
+                                    width: 60px;
+                                    height: 60px;
+                                     " src="data:image/jpeg;base64,@(item.ThumbnailImage != null ? Convert.ToBase64String(item.ThumbnailImage) : "")" alt="File Image" />
+                                </td>
+                                    
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @String.Format(new CultureInfo("vi-VN"), "{0:C}",item.Price)
+                                </td>
+                                <td>
+                                    @String.Format(new CultureInfo("vi-VN"), "{0:C}",item.OriginalPrice)
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Stock)
+                                </td>
+                                <td>
+                                    
+                                        <div class="form-check form-switch">
+                                        <input itemid="@item.Id" class="form-check-input" type="checkbox" role="switch" asp-for="@item.IsFeature" value="@item.IsFeature" id="flexSwitchCheckDefault">
+                                         </div>
+                                   
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Author.Name)
+                                </td>
+                                <td>
+                                   <div>
+                                        @Html.ActionLink("Sửa", "Edit", new { id = item.Id },new {@class = "btn btn-outline-primary"})
+                                        @Html.ActionLink("Xem", "Detail", new { id = item.Id },new {@class = "btn btn-outline-info"})
+                                        @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new {@class = "btn btn-outline-danger"})
+                                        @Html.ActionLink("Thêm ảnh", "AddImage", new { id = item.Id }, new {@class = "btn btn-outline-warning"})
+                                        @Html.ActionLink("Xóa ảnh", "DeleteImage", new { id = item.Id }, new {@class = "btn btn-outline-dark"})
+
+
+                                   </div>
+                                   <div class="mt-2">
+                                        @Html.ActionLink("Thêm danh mục", "CategoryAssign", new { id = item.Id },new {@class = "btn btn-outline-secondary"})
+                                   </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+          @*  @await Component.InvokeAsync("Pager", Model.ResultObj)*@
+        </div>
+    </div>
+</div>
+<script>
+   
+</script>
