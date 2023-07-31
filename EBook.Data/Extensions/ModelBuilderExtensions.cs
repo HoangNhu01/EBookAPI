@@ -66,13 +66,13 @@ namespace eBook.Data.Extensions
                  {
                      Id = 1,
                      ProductId = 1,
-                     Name = "Cà Phê Đen",
+                     Name = "Life of the Wild",
                      LanguageId = "vi-VN",
-                     SeoAlias = "ca-phe-den-nguyen-chat-viet-nam",
-                     SeoDescription = "Cà phê đen nguyên chất Việt Nam",
-                     SeoTitle = "Cà phê đen nguyên chất Việt Nam",
-                     Details = "Cà phê đen nguyên chất Việt Nam",
-                     Description = "Cà phê đen nguyên chất Việt Nam"
+                     SeoAlias = "life-of-the-wild",
+                     SeoDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet, libero ipsum enim pharetra hac. Urna commodo, lacus ut magna velit eleifend. Amet, quis urna, a eu.",
+                     SeoTitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet, libero ipsum enim pharetra hac. Urna commodo, lacus ut magna velit eleifend. Amet, quis urna, a eu.",
+                     Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet, libero ipsum enim pharetra hac. Urna commodo, lacus ut magna velit eleifend. Amet, quis urna, a eu.",
+                     Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet, libero ipsum enim pharetra hac. Urna commodo, lacus ut magna velit eleifend. Amet, quis urna, a eu."
                  });
             modelBuilder.Entity<ProductInCategory>().HasData(
                 new ProductInCategory() { ProductId = 1, CategoryId = 1 }
